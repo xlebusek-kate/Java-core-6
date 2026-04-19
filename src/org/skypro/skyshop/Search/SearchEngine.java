@@ -1,25 +1,20 @@
 package org.skypro.skyshop.Search;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class SearchEngine {
 
-    private final Searchable[] searchables;
+    private List<Searchable> searchables = new LinkedList<>();
 
-    public SearchEngine(int capacity) {
-        this.searchables = new Searchable[capacity];
-    }
-
-    public Searchable[] search(String query) {
-        Searchable[] result = new Searchable[5];
-        int count = 0;
+    public List search(String query) {
+        List<Searchable> objects = new LinkedList<>();
         for (Searchable searchable : searchables) {
             if (searchable != null && searchable.getSearchTerms().contains(query)) {
-                result[count++] = searchable;
-                if (count >= 50) {
-                    break;
-                }
+                objects.add(searchable);
             }
         }
-        return result;
+        return objects;
     }
 
     public Searchable findSearchable(String search) throws BestResultNotFound {
@@ -56,12 +51,12 @@ public class SearchEngine {
             System.out.println("Невозможно добавить элемент для поиска");
             return;
         }
-        searchables[freeIndex] = searchable;
+        searchables.set(freeIndex, searchable);
     }
 
     public int getFreeIndex() {
-        for (int i = 0; i < searchables.length; i++) {
-            if (searchables[i] == null) {
+        for (int i = 0; i < searchables.size(); i++) {
+            if (searchables.get(i) == null) {
                 return i;
             }
         }
