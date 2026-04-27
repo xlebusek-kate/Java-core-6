@@ -10,45 +10,38 @@ import org.skypro.skyshop.Search.BestResultNotFound;
 import org.skypro.skyshop.Search.SearchEngine;
 import org.skypro.skyshop.Search.Searchable;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class App {
     public static void main(String[] args) {
-        ProductBasket basket = new ProductBasket();
 
-        Product plain = new FixPriceProduct("Самолет");
-        Product coat = new DiscountedProduct("Пуховик", 40, 90);
-        Product map = new DiscountedProduct("Карта", 100, 10);
-        Product lock = new SimpleProduct("Замок", 60);
+        Searchable plain = new FixPriceProduct("Самолет");
+        Searchable car = new FixPriceProduct("Машинка");
+        Searchable home = new SimpleProduct("Дом", 2500);
 
-        basket.add(plain);
-        basket.add(coat);
-        basket.add(map);
-        basket.add(lock);
-        System.out.println("========================================================");
-        basket.printBasket();
-        System.out.println("========================================================");
-        List<Product> removeBasket = basket.deleteSomeProduct("Самолет");
-        if (removeBasket.isEmpty()){
-            System.out.println("Пусто");
+        List<Searchable> productsInList = new LinkedList<>();
+        productsInList.add(plain);
+        productsInList.add(car);
+        productsInList.add(home);
+
+        SearchEngine searchEngine = new SearchEngine();
+        searchEngine.add("Toy",plain );
+        searchEngine.add("Toy",car );
+        searchEngine.add("Toy",home );
+
+
+        try {
+            Map<String, List<Searchable>> results = searchEngine.findSearchable("Toys");
+
+            for (Map.Entry<String, List<Searchable>> entry : results.entrySet()) {
+                System.out.println("Category: " + entry.getKey());
+                for (Searchable item : entry.getValue()) {
+                    System.out.println("Item: " + item);
+                }
+            }
+        } catch (BestResultNotFound e) {
+            System.out.println("Error: " + e.getMessage());
         }
-        for (int i = 0;i < removeBasket.size();i++){
-            System.out.println(removeBasket.get(i));
-        }
-        System.out.println("========================================================");
-        basket.printBasket();
-        System.out.println("========================================================");
-        basket.deleteSomeProduct("Машинка");
-        System.out.println("========================================================");
-        basket.removeAllProduct();
-        basket.printBasket();
-
-
-
-
-
-
 
 
     }
