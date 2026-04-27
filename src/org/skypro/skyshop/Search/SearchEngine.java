@@ -1,13 +1,12 @@
 package org.skypro.skyshop.Search;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class SearchEngine {
+    private final Map<String, List<Searchable>> fullProductBasket = new LinkedHashMap<>();
+    private final List<Searchable> searchables = new LinkedList<>();
 
-    private List<Searchable> searchables = new LinkedList<>();
-
-    public List search(String query) {
+    public List<Searchable> search(String query) {
         List<Searchable> objects = new LinkedList<>();
         for (Searchable searchable : searchables) {
             if (searchable != null && searchable.getSearchTerms().contains(query)) {
@@ -17,49 +16,41 @@ public class SearchEngine {
         return objects;
     }
 
-    public Searchable findSearchable(String search) throws BestResultNotFound {
+    public Map<String, List<Searchable>> findSearchable(String search) throws BestResultNotFound {
+        Map<String, List<Searchable>> treeMap = new TreeMap<>();
         if (search == null || search.isEmpty()) {
-            throw new BestResultNotFound(search);
+            throw new BestResultNotFound("Error in search");
         }
-        Searchable bestResult = null;
-        int maxOccurrences = 0;
-        String target = search.toLowerCase();
-
-        for (Searchable searchable : searchables) {
-            if (searchable == null) continue;
-            String text = searchable.getSearchTerms().toLowerCase();
-            int count = 0;
-            int index = 0;
-
-            while ((index = text.indexOf(target, index)) != -1) {
-                count++;
-                index += target.length();
+        if (!fullProductBasket.isEmpty()) {
+            for (String key : fullProductBasket.keySet()) {
+                if (key.contains(search)) {
+                    List<Searchable> list = fullProductBasket.get(key);
+                    if (list != null) {
+                        treeMap.put(key, list);
+                    }
+                }
             }
-            if (count > maxOccurrences) {
-                maxOccurrences = count;
-                bestResult = searchable;
-            }
+        } else {
+            throw new BestResultNotFound("Error in fullProductBasket");
         }
-        if (maxOccurrences <= 0) {
-            throw new BestResultNotFound(search);
-        }
-        return bestResult;
-    }
-    public void add(Searchable searchable) {
-        int freeIndex = getFreeIndex();
-        if (freeIndex < -1) {
-            System.out.println("Невозможно добавить элемент для поиска");
-            return;
-        }
-        searchables.set(freeIndex, searchable);
+        return treeMap;
     }
 
-    public int getFreeIndex() {
-        for (int i = 0; i < searchables.size(); i++) {
-            if (searchables.get(i) == null) {
-                return i;
-            }
+    public void add(String key, Searchable item) {
+        List<Searchable> list = fullProductBasket.get(key);
+        if (list == null) {
+            list = new LinkedList<>();
+            fullProductBasket.put(key, list);
         }
-        return 0;
+        list.add(item);
     }
+
+//    public int getFreeIndex() {
+//        for (int i = 0; i < searchables.size(); i++) {
+//            if (searchables.get(i) == null) {
+//                return i;
+//            }
+//        }
+//        return 0;
+//    }
 }
