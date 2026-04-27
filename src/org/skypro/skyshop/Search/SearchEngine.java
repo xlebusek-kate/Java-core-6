@@ -17,40 +17,24 @@ public class SearchEngine {
     }
 
     public Map<String, List<Searchable>> findSearchable(String search) throws BestResultNotFound {
-        Map<String, List<Searchable>> treeMap = new TreeMap<>();
+        Map<String, List<Searchable>> hashMap = new TreeMap<>();
         if (search == null || search.isEmpty()) {
             throw new BestResultNotFound("Error in search");
         }
         if (!fullProductBasket.isEmpty()) {
             for (String key : fullProductBasket.keySet()) {
                 if (key.contains(search)) {
-                    List<Searchable> list = fullProductBasket.get(key);
-                    if (list != null) {
-                        treeMap.put(key, list);
+                    List<Searchable> products = fullProductBasket.get(key);
+                    if (products != null) {
+                        hashMap.put(key,products);
                     }
                 }
             }
-        } else {
-            throw new BestResultNotFound("Error in fullProductBasket");
         }
-        return treeMap;
+        return  hashMap;
     }
 
     public void add(String key, Searchable item) {
-        List<Searchable> list = fullProductBasket.get(key);
-        if (list == null) {
-            list = new LinkedList<>();
-            fullProductBasket.put(key, list);
-        }
-        list.add(item);
+        fullProductBasket.computeIfAbsent(key, k -> new LinkedList<>()).add(item);
     }
-
-//    public int getFreeIndex() {
-//        for (int i = 0; i < searchables.size(); i++) {
-//            if (searchables.get(i) == null) {
-//                return i;
-//            }
-//        }
-//        return 0;
-//    }
 }
