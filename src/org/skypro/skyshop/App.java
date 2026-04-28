@@ -19,29 +19,46 @@ public class App {
         Searchable car = new FixPriceProduct("Машинка");
         Searchable home = new SimpleProduct("Дом", 2500);
 
-        List<Searchable> productsInList = new LinkedList<>();
-        productsInList.add(plain);
-        productsInList.add(car);
-        productsInList.add(home);
+        List<Product> productsInList = new LinkedList<>();
+//        productsInList.add(plain);
+//        productsInList.add(car);
+//        productsInList.add(home);
 
         SearchEngine searchEngine = new SearchEngine();
-        searchEngine.add("Toy",plain );
-        searchEngine.add("Toy",car );
-        searchEngine.add("Toy",home );
+        searchEngine.add("Toy", plain);
+        searchEngine.add("Toy", car);
+        searchEngine.add("Toy", home);
+
+        Product plainP = new FixPriceProduct("Самолет");
+        Product carP = new FixPriceProduct("Машинка");
+        Product homeP = new SimpleProduct("Дом", 2500);
+        List<Product> products = new LinkedList<>();
+        products.add(plainP);
+        products.add(carP);
+        products.add(homeP);
+
+        Map<String,List<Product>> stringListMap = new LinkedHashMap<>();
+        stringListMap.put("Toys", products);
+        ProductBasket productBasket1 = new ProductBasket();
+        productBasket1.add("Toys" , products);
+        productBasket1.printAllInformation();
+        System.out.println("==========================");
+        productBasket1.deleteSomeProduct("Toys");
+        productBasket1.printAllInformation();
 
 
-        try {
-            Map<String, List<Searchable>> results = searchEngine.findSearchable("Toys");
-
-            for (Map.Entry<String, List<Searchable>> entry : results.entrySet()) {
-                System.out.println("Category: " + entry.getKey());
-                for (Searchable item : entry.getValue()) {
-                    System.out.println("Item: " + item);
-                }
-            }
-        } catch (BestResultNotFound e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+//        try {
+//            Map<String, List<Searchable>> results = searchEngine.findSearchable("Toys");
+//
+//            for (Map.Entry<String, List<Searchable>> entry : results.entrySet()) {
+//                System.out.println("Category: " + entry.getKey());
+//                for (Searchable item : entry.getValue()) {
+//                    System.out.println("Item: " + item);
+//                }
+//            }
+//        } catch (BestResultNotFound e) {
+//            System.out.println("Error: " + e.getMessage());
+//        }
 
 
     }
