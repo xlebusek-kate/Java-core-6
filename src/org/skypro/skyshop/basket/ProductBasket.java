@@ -8,7 +8,7 @@ import java.util.*;
 
 public class ProductBasket {
     private List<Product> productBasket = new LinkedList<>();
-    private Map<String, List<Product>> fullProductBasket = new LinkedHashMap<>();
+    private Map<String, List<Product>> fullProductBasket = new HashMap<>();
 
     public void add(String name, List<Product> products) {
         fullProductBasket.computeIfAbsent(name, k -> new ArrayList<>()).addAll(products);
