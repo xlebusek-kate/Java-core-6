@@ -1,30 +1,29 @@
 package org.skypro.skyshop.basket;
 
+import org.skypro.skyshop.Search.Searchable;
 import org.skypro.skyshop.product.Product;
 
 import java.util.*;
 
 
 public class ProductBasket {
-    private final List<Product> productBasket = new LinkedList<>();
+    private List<Product> productBasket = new LinkedList<>();
+    private Map<String, List<Product>> fullProductBasket = new HashMap<>();
 
-    public void add(Product product){
-            if (product != null){
-                productBasket.add(product);
-            }
+    public void add(String name, List<Product> products) {
+        fullProductBasket.computeIfAbsent(name, k -> new ArrayList<>()).addAll(products);
     }
-    public void printBasket() {
-        int count = 0;
-        for (Product product : productBasket) {
-            if (product != null) {
-                count++;
-                System.out.println(product);
+
+    public void printAllInformation() {
+        for (String key : fullProductBasket.keySet()) {
+            System.out.println("key = " + key + " \nProducts: ");
+            List<Product> list = fullProductBasket.get(key);
+            for (Product products : list) {
+                System.out.println("\t" + products.getProductName());
             }
+
         }
 
-        if (count == 0) {
-            System.out.println("В корзине пусто");
-        }
         System.out.println(String.format("Итого: %.2f ", getTotalCost()));
         System.out.println("Специальных товаров: " + isSpecialProduct());
     }
@@ -52,6 +51,7 @@ public class ProductBasket {
 
     public void removeAllProduct() {
         for (int i = 0; i < productBasket.size(); i++) {
+
             productBasket.set(i, null);
         }
     }
@@ -66,25 +66,16 @@ public class ProductBasket {
         return countIsSpec;
     }
 
-    public List<Product> deleteSomeProduct(String name) {
-        List<Product> deleteBasket = new LinkedList<>();
-        Iterator<Product> iterator = productBasket.iterator();
-        int count = 0;
-        if (productBasket.isEmpty()) {
-            System.out.println(" Cписок пуст");
+    public void deleteSomeProduct(String key) {
+        if (key == null) {
+            System.out.println("Пусто");
         }
-        
-        while (iterator.hasNext()) {
-            Product product = iterator.next();
-            if (name != null && Objects.equals(product.getProductName(), name)) {
-                deleteBasket.add(product);
-                iterator.remove();
+        for (String keyOfFor : fullProductBasket.keySet()) {
+            if (Objects.equals(keyOfFor, key)) {
+                fullProductBasket.remove(keyOfFor);
             }
+
         }
-        if (deleteBasket.isEmpty()){
-            System.out.println("Такого в списке нет");
-        }
-        return deleteBasket;
     }
 }
 

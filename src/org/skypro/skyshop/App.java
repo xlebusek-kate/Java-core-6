@@ -10,45 +10,55 @@ import org.skypro.skyshop.Search.BestResultNotFound;
 import org.skypro.skyshop.Search.SearchEngine;
 import org.skypro.skyshop.Search.Searchable;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class App {
     public static void main(String[] args) {
-        ProductBasket basket = new ProductBasket();
 
-        Product plain = new FixPriceProduct("Самолет");
-        Product coat = new DiscountedProduct("Пуховик", 40, 90);
-        Product map = new DiscountedProduct("Карта", 100, 10);
-        Product lock = new SimpleProduct("Замок", 60);
+        Searchable plain = new FixPriceProduct("Самолет");
+        Searchable car = new FixPriceProduct("Машинка");
+        Searchable home = new SimpleProduct("Дом", 2500);
 
-        basket.add(plain);
-        basket.add(coat);
-        basket.add(map);
-        basket.add(lock);
-        System.out.println("========================================================");
-        basket.printBasket();
-        System.out.println("========================================================");
-        List<Product> removeBasket = basket.deleteSomeProduct("Самолет");
-        if (removeBasket.isEmpty()){
-            System.out.println("Пусто");
-        }
-        for (int i = 0;i < removeBasket.size();i++){
-            System.out.println(removeBasket.get(i));
-        }
-        System.out.println("========================================================");
-        basket.printBasket();
-        System.out.println("========================================================");
-        basket.deleteSomeProduct("Машинка");
-        System.out.println("========================================================");
-        basket.removeAllProduct();
-        basket.printBasket();
+        List<Product> productsInList = new LinkedList<>();
+//        productsInList.add(plain);
+//        productsInList.add(car);
+//        productsInList.add(home);
+
+        SearchEngine searchEngine = new SearchEngine();
+        searchEngine.add("Toy", plain);
+        searchEngine.add("Toy", car);
+        searchEngine.add("Toy", home);
+
+        Product plainP = new FixPriceProduct("Самолет");
+        Product carP = new FixPriceProduct("Машинка");
+        Product homeP = new SimpleProduct("Дом", 2500);
+        List<Product> products = new LinkedList<>();
+        products.add(plainP);
+        products.add(carP);
+        products.add(homeP);
+
+        Map<String,List<Product>> stringListMap = new LinkedHashMap<>();
+        stringListMap.put("Toys", products);
+        ProductBasket productBasket1 = new ProductBasket();
+        productBasket1.add("Toys" , products);
+        productBasket1.printAllInformation();
+        System.out.println("==========================");
+        productBasket1.deleteSomeProduct("Toys");
+        productBasket1.printAllInformation();
 
 
-
-
-
-
+//        try {
+//            Map<String, List<Searchable>> results = searchEngine.findSearchable("Toys");
+//
+//            for (Map.Entry<String, List<Searchable>> entry : results.entrySet()) {
+//                System.out.println("Category: " + entry.getKey());
+//                for (Searchable item : entry.getValue()) {
+//                    System.out.println("Item: " + item);
+//                }
+//            }
+//        } catch (BestResultNotFound e) {
+//            System.out.println("Error: " + e.getMessage());
+//        }
 
 
     }
