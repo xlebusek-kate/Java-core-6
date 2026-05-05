@@ -51,7 +51,6 @@ public class ProductBasket {
 
     public void removeAllProduct() {
         for (int i = 0; i < productBasket.size(); i++) {
-
             productBasket.set(i, null);
         }
     }
@@ -74,7 +73,6 @@ public class ProductBasket {
             if (Objects.equals(keyOfFor, key)) {
                 fullProductBasket.remove(keyOfFor);
             }
-
         }
     }
 }
