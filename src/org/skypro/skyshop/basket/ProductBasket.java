@@ -73,7 +73,6 @@ public class ProductBasket {
             if (Objects.equals(keyOfFor, key)) {
                 fullProductBasket.remove(keyOfFor);
             }
-
         }
     }
 }
