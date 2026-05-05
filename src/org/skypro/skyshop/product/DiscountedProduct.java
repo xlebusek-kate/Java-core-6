@@ -1,5 +1,7 @@
 package org.skypro.skyshop.product;
 
+import java.util.Objects;
+
 public class DiscountedProduct extends Product {
         private final double basePrice;
         private final int discountedPrice;
@@ -33,5 +35,8 @@ public class DiscountedProduct extends Product {
         public String toString() {
             return String.format("%s со скидкой: %.2f (%d%%)", getProductName(), getPrice(), discountedPrice);
         }
-    }
+
+
+
+}
 

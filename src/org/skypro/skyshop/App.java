@@ -32,15 +32,15 @@ public class App {
         Product plainP = new FixPriceProduct("Самолет");
         Product carP = new FixPriceProduct("Машинка");
         Product homeP = new SimpleProduct("Дом", 2500);
-        List<Product> products = new LinkedList<>();
+        Set<Product> products = new HashSet<>();
         products.add(plainP);
         products.add(carP);
         products.add(homeP);
 
-        Map<String,List<Product>> stringListMap = new LinkedHashMap<>();
+        Map<String,Set<Product>> stringListMap = new LinkedHashMap<>();
         stringListMap.put("Toys", products);
         ProductBasket productBasket1 = new ProductBasket();
-        productBasket1.add("Toys" , products);
+        productBasket1.add("Toys" ,products);
         productBasket1.printAllInformation();
         System.out.println("==========================");
         productBasket1.deleteSomeProduct("Toys");
