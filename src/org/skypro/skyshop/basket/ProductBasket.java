@@ -7,17 +7,17 @@ import java.util.*;
 
 
 public class ProductBasket {
-    private List<Product> productBasket = new LinkedList<>();
-    private Map<String, List<Product>> fullProductBasket = new HashMap<>();
+    private Set<Product> productBasket = new HashSet<>();
+    private Map<String, Set<Product>> fullProductBasket = new HashMap<>();
 
-    public void add(String name, List<Product> products) {
-        fullProductBasket.computeIfAbsent(name, k -> new ArrayList<>()).addAll(products);
+    public void add(String name, Set<Product> products) {
+        fullProductBasket.computeIfAbsent(name, k -> new HashSet<>()).addAll(products);
     }
 
     public void printAllInformation() {
         for (String key : fullProductBasket.keySet()) {
             System.out.println("key = " + key + " \nProducts: ");
-            List<Product> list = fullProductBasket.get(key);
+            Set<Product>list = fullProductBasket.get(key);
             for (Product products : list) {
                 System.out.println("\t" + products.getProductName());
             }
@@ -50,9 +50,8 @@ public class ProductBasket {
     }
 
     public void removeAllProduct() {
-        for (int i = 0; i < productBasket.size(); i++) {
-
-            productBasket.set(i, null);
+        for (Product product: productBasket){
+            fullProductBasket.remove(product);
         }
     }
 
